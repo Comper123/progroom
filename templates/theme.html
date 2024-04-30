@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+
+{% block title %}Темы{% endblock %}
+{% block content %}
+{% set q_img = url_for('static', filename='img/question.png') %}
+{% set q_error = url_for('static', filename='img/error.png') %}
+<div class="theme">
+    <h1 class="mb-2">{{ data['theme'].title }}</h1>
+    <p class="reiting_info mb-5">{{ data['theme'].description }}</p>
+    <h3 class="answer_form_zag2 mb-1">Вопросы({{ data['questions']|length }})</h3>
+    <hr class="answers_hr mb-3 mt-1">
+    {% for q in data['questions'] %}
+        <a href="/question/{{ q.id }}" class="question_link">
+            <div class="question">
+                <div class="question_header">
+                    <div class="main_header_question">
+                        <img src="{{ q_img }}" alt="" class="q_img">
+                        <p>{{ q.title|truncate(40) }}</p>
+                    </div>
+                    <div class="main_header_data">
+                        <p>{{ data['dates'][q.id] }}</p>
+                    </div>
+                </div>
+                <hr class="question_hr">
+                <div class="question_footer">
+                    <img src="{{ q_error }}" alt="" class="q_img">
+                    <p class="question_content">{{ q.content|truncate(200) }}</p>
+                </div>
+            
+            </div>
+        </a>
+    {% endfor %}
+</div>
+{% endblock %}

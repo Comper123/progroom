@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+{% block title %}Новый вопрос{% endblock %}
+{% block content %}
+<section class="create_question">
+    <div class="form_create_question">
+        <p class="alertt">{{message}}</p>
+        <form action="" method="post" class="question_form" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.title.label }} <span class="alertt">*</span><br>
+                {{ form.title(class="form-control") }}<br>
+                {% for error in form.title.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.content.label }} <span class="alertt">*</span><br>
+                {{ form.content(class="form-control") }}<br>
+                {% for error in form.content.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.theme.label }} <span class="alertt">*</span><br>
+                <div class="select_theme">
+                    {{ form.theme(class="form-control") }}
+                    <a href="/add_theme" class="ml-5 btn btn-primary">Добавить тему</a>
+                </div>
+                <br>
+                {% for error in form.theme.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.img.label }}<br>
+                {{ form.img(class="form-control", type="file", accept="image/png, image/jpg") }}<br>
+                {% for error in form.img.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

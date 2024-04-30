@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+
+{% block title %}Рейтинг{% endblock %}
+{% block content %}
+<section class="reiting_section">
+    <h1 class="mb-5">Рейтинг пользователей</h1>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Пользователь</th>
+            <th scope="col">Рейтинг</th>
+            <th scope="col">Опыт</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            {% if current_user.id == user.id %}
+                <tr class='table-success' style="background-color: rgb(191, 238, 144);">
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ user.name }}</td>
+                    <td><img src="/static/img/rang/rang{{ user.lvl }}.png" alt=""></td>
+                    <td>{{ user.exp }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <th scope="row">{{ loop.index }}</th>
+                    <td>{{ user.name }}</td>
+                    <td><img src="/static/img/rang/rang{{ user.lvl }}.png" alt=""></td>
+                    <td>{{ user.exp }}</td>
+                </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+</section>
+{% endblock %}

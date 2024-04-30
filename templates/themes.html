@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% block title %}Темы{% endblock %}
+{% block content %}
+<div class="themes">
+    <h1>Вопросы по темам</h1>
+    {% if current_user.is_authenticated %}
+    <p class="reiting_info mb-5">Вы можете добавить тему сами, возможно вы найдете единомышленников)</p>
+    <a href="/add_theme" class="add_theme mb-2">
+        <div class="plus">
+            <p class="plus_symbol mb-0">+</p>
+        </div>
+    </a>
+    {% endif %}
+    {% if thms %}
+    {% if current_user.is_authenticated %}
+    <div class="themess">
+        <h3 class="answer_form_zag2">Другие темы:</h3>
+        <hr class="answers_hr">
+    </div>
+    {% endif %}
+    {% for t in thms %}
+        <a href="/themes/{{ t.id }}" class="mt-4 all_theme_theme">
+            <img src="/static/img/themes/theme{{ t.id % 3 + 1 }}.png" alt="" class="theme_img">
+            <p class="all_theme_title">{{ t.title|truncate(20) }}</p>
+        </a>
+    {% endfor %}
+    {% endif %}
+
+</div>
+{% endblock %}

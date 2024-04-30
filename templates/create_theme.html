@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block title %}Новая тема{% endblock %}
+{% block content %}
+<section class="create_question">
+    <div class="form_create_question">
+        <p class="alertt">{{message}}</p>
+        <form action="" method="post" class="question_form">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.title.label }} <span class="alertt">*</span><br>
+                {{ form.title(class="form-control") }}<br>
+                {% for error in form.title.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>
+                {{ form.description.label }} <span class="alertt">*</span><br>
+                {{ form.description(class="form-control") }}<br>
+                {% for error in form.description.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

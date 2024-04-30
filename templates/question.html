@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+{% set question = data['question'] %}
+<section class="one_question">
+    <div class="one_question_main">
+        <div class="one_question_header">
+            <h1 class="one_question_title">{{ question.title }}</h1>
+            <div class="one_question_title_description">
+                <p class="one_question_title_autor">{{ data['autor'] }}</p>
+                <p class="one_question_title_date">{{ data['date'] }}</p>
+            </div>
+            <hr class="one_question_title_hr">
+        </div>
+        <div class="one_question_description">
+            {% if 'img' in data %}
+                <a href="{{ data['img'] }}" data-fancybox="">
+                    <img class="" style="object-fit: cover;" src="{{ data['img'] }}" width="500" height="500" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </a>
+                <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+            {% endif %}
+            <!-- <p class="one_question_description_text"><pre><code class="language-html">{{ question.content }}</code></pre></p> -->
+            <p class="one_question_description_text">{{ question.content }}</p>
+        </div>
+        <!-- <hr class="one_question_title_hr"> -->
+    </div>
+    {% if not current_user.is_authenticated %}
+        <!-- <h3 class="answer_form_zag mb-5">Зарегистрируйтесь, чтобы оставить ответ</h3> -->
+    {% endif %}
+    {% if 'answer_form' in data %}
+        <h3 class="answer_form_zag">Оставьте свой ответ:</h3>
+        <!-- <hr class="answer_form_hr"> -->
+        {% set an_form = data['answer_form'] %}
+        <div class="answer_form_block">
+            <form action="" method="post" class="answer_form">
+                {{ an_form.hidden_tag() }}
+                <p>
+                    {{ an_form.text.label }} <span class="alertt">*</span><br>
+                    {{ an_form.text(class="form-control") }}<br>
+                    {% for error in an_form.text.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </p>
+        
+                <p>{{ an_form.submit(type="submit", class="btn btn-primary") }}</p>
+            </form>
+        </div>
+    {% endif %}
+    <div class="one_question_answers_parents">
+        {% if 'answers' in data %}
+        <h3 class="answer_form_zag2">Решения вопроса ({{ data['answers']|length }})</h3>
+        <hr class="answers_hr">
+        <div class="one_question_answers">
+            {% for ans in data['answers'] %}
+                <div class="answer">
+                    <div class="answer_another">
+                        <div class="answered_user_rang">
+                            <img class='img_rang_answer' src="/static/img/rang/rang{{ data['answers_users'][ans.autor].lvl }}.png" alt="">
+                        </div>
+                        {% if ans.is_like_autor %}
+                        <img class='img_like_answer' src="/static/img/checkmark.png">
+                        {% endif %}
+                        <div class="likeform">
+                            {% if ans.autor != current_user.id and current_user.is_authenticated %}
+                                {% if not current_user.id in ans.liked() %}
+                                <a href="/like_answer_user/a_id={{ ans.id }}&q_id={{ question.id }}" class="">
+                                    <i class="fa-regular fa-heart" style="color: red;"></i>
+                                </a>
+                                {% else %}
+                                <a href="/dislike_answer/a_id={{ ans.id }}&q_id={{ question.id }}" class="">
+                                    <i class="fa-solid fa-heart" style="color: red;"></i>
+                                </a>
+                                {% endif %}
+                            {% else %}
+                            <div>
+                                <i class="fa-regular fa-heart" style="color: red;"></i>
+                            </div>
+                            {% endif %}
+                            <p class="count_like">
+                                {{ ans.liked()|length - 1 }}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="answer_text_block">
+                        <div class="answer_info">
+                            <p class="answer_user">{{ data['answers_users'][ans.autor].name }}</p>
+                            <p class="answer_date">{{ data['answers_date'][ans.id] }}</p>
+                        </div>
+                        <p class="answer_text">{{ ans.text }}</p>
+                        <div class="answer_buttons">
+                            {% if not ans.is_like_autor and not 'answer_form' in data and question.autor == current_user.id %}
+                            <a href="/like_answer/a_id={{ ans.id }}&q_id={{ question.id }}" class="mr-5 btn btn-success">Пометить полезным</a>
+                            {% endif %}
+                            {% if current_user.id == ans.autor or current_user.is_superuser %}
+                            <a href="/delete_answer/{{ ans.id }}" class="ml-5 mr-5 btn btn-primary">Удалить</a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+        <!-- <h3 class="answer_form_zag2" style="margin-bottom: 100px;">Ответов пока нет...</h3> -->
+        {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

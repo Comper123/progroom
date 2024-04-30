@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+
+{% block title %}Progroom{% endblock %}
+{% block content %}
+{% set q_img = url_for('static', filename='img/question.png') %}
+{% set q_error = url_for('static', filename='img/error.png') %}
+<section class="main_carusel">
+    <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" style="margin: auto;">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="0" aria-label="Slide 1" class="active" aria-current="true" ></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
+          <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img class="d-block bd-placeholder-img" style="object-fit: cover; height: 75vh; width: 65vw;" src="{{url_for('static', filename='img/slide1.png')}}" width="1200px" height="750px" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <div class="carousel-caption d-none d-md-block">
+                <h2 class="pb-2">Спрашивайте</h2>
+                <h4>Вы можете задавать другим пользователям вопросы по программированию.</h4>
+            </div>
+        </div>
+          <div class="carousel-item">
+            <!-- <a href="/login" class="carousel-caption d-none d-md-block btn btn-primary me-2">Вход</a> -->
+            <img class="d-block bd-placeholder-img" style="object-fit: cover; height: 75vh; width: 65vw;" src="{{url_for('static', filename='img/slide2.png')}}" width="1200px" height="750px" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <div class="carousel-caption d-none d-md-block">
+                <h2 class="pb-2">Отвечайте</h2>
+                <h4>Вы также можете отвечать на вопросы других пользователей, помогая им решить проблемы.</h4>
+            </div>
+        </div>
+          <div class="carousel-item">
+            <img class="d-block bd-placeholder-img" style="object-fit: cover; height: 75vh; width: 65vw;" src="{{url_for('static', filename='img/slide3.png')}}" width="1200px" height="750px" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <div class="carousel-caption d-none d-md-block">
+                <h2 class="pb-2">Повышайте рейтинг</h2>
+                <h4>Отвечая на вопросы вы получаете опыт, который отображается в вашем профиле и конвертируется в уровень пользователя.</h4>
+            </div>
+        </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+</section>
+<section class="main mb-5">
+    <div>
+        <!-- <h1 class="">Ваши вопросы: </h1>
+        <hr class="index_hr"> -->
+        {% for q in data['questions'] %}
+        <a href="/question/{{ q.id }}" class="question_link">
+            <div class="question">
+                <div class="question_header">
+                    <div class="main_header_question">
+                        <img src="{{ q_img }}" alt="" class="q_img">
+                        <p>{{ q.title|truncate(40) }}</p>
+                    </div>
+                    <div class="main_header_data">
+                        <p>{{ data['dates'][q.id] }}</p>
+                    </div>
+                </div>
+                <hr class="question_hr">
+                <div class="question_footer">
+                    <img src="{{ q_error }}" alt="" class="q_img">
+                    <p class="question_content">{{ q.content|truncate(200) }}</p>
+                </div>
+            
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

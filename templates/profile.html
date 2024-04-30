@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<section class="user">
+    <div class="flex">
+        <div class="user_info">
+            <div class="edit_profile_parent">
+                {% set form = data["form"] %}
+                <div class="edit_profile">
+                    <img src="{{ url_for('static', filename='img/default_user.png') }}" alt="" class='default_user_img'>
+
+                    <form action="" method="post" class="profile_form">
+                        {{ form.hidden_tag() }}
+                        <p>
+                            {{ form.email.label }}<br>
+                            {{ form.email(class="form-control") }}<br>
+                            {% for error in form.email.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                        </p>
+
+                        <p>
+                            {{ form.name.label }}<br>
+                            {{ form.name(class="form-control") }}<br>
+                            {% for error in form.name.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                        </p>
+
+                        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                    </form>
+                </div>
+            </div>
+            <div class="other_user_info">
+                <div class="user_reiting_parent">
+                    <div class="user_reiting">
+                        <h1>Ваш рейтинг</h1>
+                        <p class="reiting_info">За ответ на вопрос вы получаете +10 к рейтингу также как и за лайк
+                            другими пользователями вашего ответа. Оценивая ответы других пользователей вы добавляете к рейтингу других пользователей баллы.</p>
+                        {% set v = data["exp"] %}
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                aria-valuenow="{{ data['exp'] }}" style="width: {{ v }}%;" aria-valuemin="0"
+                                aria-valuemax="100"></div>
+                        </div>
+                        <div class="reiting_values">
+                            <p class="start_lvl">{{ data["start_lvl"] }} lvl</p>
+                            <p class="exp">{{ data["exp"] }} exp</p>
+                            <p class="end_lvl">{{ data["end_lvl"] }} lvl</p>
+                        </div>
+                        <div class="rang">
+                            <img src="{{ data["start_rang"] }}" alt="">
+                            <img src="{{ data["end_rang"] }}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="user_buttons">
+                    <div class="user_questions_parent">
+                        <div class="user_questions">
+                            <h1>Ваши вопросы</h1>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

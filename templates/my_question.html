@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+
+{% block title %}Progroom{% endblock %}
+{% block content %}
+{% set q_img = url_for('static', filename='img/question.png') %}
+{% set q_error = url_for('static', filename='img/error.png') %}
+<section class="main mb-5">
+    <div>
+        {% if current_user.is_superuser %}
+        <h1 class="mb-4">Все вопросы: </h1>
+        {% else %}
+        <h1 class="mb-4">Мои вопросы: </h1>
+        {% endif %}
+        {% for q in data['questions'] %}
+            <div class="question" style="margin-bottom: 30px;">
+                <div class="question_header">
+                    <div class="main_header_question">
+                        <img src="{{ q_img }}" alt="" class="q_img">
+                        <p>{{ q.title|truncate(40) }}</p>
+                    </div>
+                    <div class="main_header_data">
+                        <p>{{ data['dates'][q.id] }}</p>
+                    </div>
+                </div>
+                <hr class="question_hr">
+                <div class="question_footer">
+                    <img src="{{ q_error }}" alt="" class="q_img">
+                    <p class="question_content">{{ q.content|truncate(100) }}</p>
+                </div>
+                <div class="question_buttons_parent">
+                    <div class="question_buttons">
+                        <a href="/question/{{ q.id }}" class="btn btn-primary">Открыть</a>
+                        <a href="/delete_question/{{ q.id }}" class="mr-5 btn btn-primary">Удалить</a>
+                        <a href="/edit_question/{{ q.id }}" class="btn btn-primary">Редактировать</a>
+                    </div>   
+                </div> 
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
